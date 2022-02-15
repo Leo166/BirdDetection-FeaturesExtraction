@@ -24,20 +24,22 @@ def show(imgs):
         axs[0, i].set(xticklabels=[], yticklabels=[], xticks=[], yticks=[])
     plt.show()
 
+# read_image -> Tensor[image_channels, image_height, image_width]
+# OpenCv frame -> numpy[image_height, image_width, image_channels]
 dog1 = read_image('images/dog1.jpg')
 # dog1 = read_image('images/dog2.jpg')
 # dog1 = read_image('images/fourmi.jpg')
 dog2 = read_image('images/zebre.jpg')
-print(dog2)
-show([dog2])
+# print(dog2)
+# show([dog2])
 
 
 import torch.nn as nn
 
 transforms = torch.nn.Sequential(
-    T.Resize([256, ]),
+    T.Resize([256,]),
     T.CenterCrop(224),
-    T.ConvertImageDtype(torch.float),
+    T.ConvertImageDtype(torch.float), # convert to this type and scale if need it [0,255] -> [0,1]
     T.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
 )
 
@@ -47,6 +49,7 @@ def prediction(dog1):
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     dog1 = dog1.to(device)
     print(dog1.size())
+    show([dog1])
     transformed_dog1 = transforms(dog1)
     show([transformed_dog1])
     print(transformed_dog1.size())
@@ -60,16 +63,16 @@ def prediction(dog1):
     # output = model(data[None, ...])
     model_conv.eval()
     outputs = model_conv(inputs)
-    print(outputs[0, 0:10])
+    print(outputs[0, 207])
     print(outputs.argmax(dim=1))
     outputs = outputs.argmax(dim=1)
 
-    with open('imagenet_class_index.json', 'r') as labels_file:
+    with open('labels_ImageNet/imagenet_class_index.json', 'r') as labels_file:
         labels = json.load(labels_file)
     print(labels[str(outputs.item())])
 
 prediction(dog1)
-prediction(dog2)
+# prediction(dog2)
 
 
 # for i, (pred, pred_scripted) in enumerate(zip(res, res_scripted)):
