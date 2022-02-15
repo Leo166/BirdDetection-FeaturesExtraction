@@ -26,6 +26,7 @@ def show(imgs):
 
 # read_image -> Tensor[image_channels, image_height, image_width]
 # OpenCv frame -> numpy[image_height, image_width, image_channels]
+# Pil -> numpy[image_height, image_width, image_channels]
 dog1 = read_image('images/dog1.jpg')
 # dog1 = read_image('images/dog2.jpg')
 # dog1 = read_image('images/fourmi.jpg')

@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import os
 
 from PIL import Image
+import cv2
 import xml.etree.ElementTree as ET
 # from torch.utils.data import Dataset, DataLoader
 
@@ -34,9 +35,14 @@ class BirdDataset(torch.utils.data.Dataset):
     def __getitem__(self, idx):
         """Loads and returns a sample from the dataset at the given index idx"""
         # load images and boxes
-        img_path = os.path.join(self.root, "all_images", self.imgs[idx])
-        box_path = os.path.join(self.root, "all_labels", self.boxes[idx])
-        img = Image.open(img_path).convert("RGB")
+        img_path = os.path.join(self.root, "all_images", self.imgs[idx]).replace("\\","/")
+        box_path = os.path.join(self.root, "all_labels", self.boxes[idx]).replace("\\","/")
+        print("Image path", img_path)
+        print(type(cv2.imread(img_path, cv2.IMREAD_COLOR)))
+        # img = Image.open(img_path).convert("RGB")
+        img = cv2.imread(img_path, cv2.IMREAD_COLOR)
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB).astype(np.float32)
+        img /= 255.0
 
         # get boxes for each bird
         document = ET.parse(box_path)
@@ -65,6 +71,15 @@ class BirdDataset(torch.utils.data.Dataset):
         # target["iscrowd"] = iscrowd
 
         if self.transforms is not None:
-            img = self.transforms(img)
+            # img = self.transforms(img)
+            sample = {
+                'image': img,
+                'bboxes': target['boxes'],
+                'labels': labels
+            }
+            sample = self.transforms(**sample)
+            img = sample['image']
+            
+            target['boxes'] = torch.stack(tuple(map(torch.tensor, zip(*sample['bboxes'])))).permute(1, 0)
 
         return img, target
