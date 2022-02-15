@@ -35,10 +35,10 @@ class BirdDataset(torch.utils.data.Dataset):
     def __getitem__(self, idx):
         """Loads and returns a sample from the dataset at the given index idx"""
         # load images and boxes
-        img_path = os.path.join(self.root, "all_images", self.imgs[idx]).replace("\\","/")
-        box_path = os.path.join(self.root, "all_labels", self.boxes[idx]).replace("\\","/")
-        print("Image path", img_path)
-        print(type(cv2.imread(img_path, cv2.IMREAD_COLOR)))
+        img_path = os.path.join(self.root, "all_images", self.imgs[idx])
+        box_path = os.path.join(self.root, "all_labels", self.boxes[idx])
+        # print("Image path", img_path)
+        # print(type(cv2.imread(img_path, cv2.IMREAD_COLOR)))
         # img = Image.open(img_path).convert("RGB")
         img = cv2.imread(img_path, cv2.IMREAD_COLOR)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB).astype(np.float32)
@@ -78,8 +78,21 @@ class BirdDataset(torch.utils.data.Dataset):
                 'labels': labels
             }
             sample = self.transforms(**sample)
+
             img = sample['image']
-            
-            target['boxes'] = torch.stack(tuple(map(torch.tensor, zip(*sample['bboxes'])))).permute(1, 0)
+            # print(zip(*sample['bboxes']))
+            # print("Boxes", sample['bboxes'])
+            # print(type(sample['bboxes']))
+            # print("Labels", sample['labels'])
+            if len(sample['bboxes']) == 0 :
+                target['boxes'] = torch.tensor([])
+                # print(target['boxes'])
+                # print(type(target['boxes']))
+                # print("NOOO")
+            else:
+                target['boxes'] = torch.stack(tuple(map(torch.tensor, zip(*sample['bboxes'])))).permute(1, 0)
+                # print(target['boxes'])
+                # print(type(target['boxes']))
+                # print("YESSSS")
 
         return img, target

@@ -46,7 +46,7 @@ def load_image(image_ref, label_ref):
     return
 
 image_ref = "../dataset/AUbirds/train/64.jpg"
-image_ref = "D:/Adrien/cours/Master2/Mémoire/Flying_birds_detection/Birds_detection/dataset/dataset/all_images/13.jpg"
+image_ref = "D:/Adrien/cours/Master2/Thesis/Flying_birds_detection/Birds_detection/dataset/dataset/all_images/13.jpg"
 label_ref = "../dataset/AUbirds/train/64.xml"
 # load_image(image_ref, label_ref)
 

@@ -9,6 +9,7 @@ import torch
 import numpy as np
 import cv2
 import albumentations as A
+from albumentations.pytorch.transforms import ToTensorV2
 import matplotlib.pyplot as plt
 from toolbox.dataset import BirdDataset
 
@@ -55,67 +56,69 @@ import torchvision.transforms as T
 #     return T.Compose(transforms)
 
 def get_transform(train):
-    return A.Compose([A.Flip(0.5)], bbox_params={'format': 'pascal_voc'}) 
+    return A.Compose([ A.RandomCrop(width=500, height=500),
+                    A.Flip(0.5),
+                    ToTensorV2(p=1.0)], bbox_params={'format': 'pascal_voc', 'label_fields': ['labels']}) 
 
 
-ROOT_DIR_DATA = "D:/Adrien/cours/Master2/Mémoire/Flying_birds_detection/Birds_detection/dataset/dataset"
-# ROOT_DIR_DATA = "D:\Adrien\cours\Master2\Mémoire\Flying_birds_detection\Birds_detection\dataset\dataset"
+ROOT_DIR_DATA = "D:/Adrien/cours/Master2/Thesis/Flying_birds_detection/Birds_detection/dataset/dataset"
+# ROOT_DIR_DATA = "D:\Adrien\cours\Master2\Thesis\Flying_birds_detection\Birds_detection\dataset\dataset"
 
 # instantiate dataset objects
 ds = BirdDataset(ROOT_DIR_DATA, get_transform(train=True))
 ds_test = BirdDataset(ROOT_DIR_DATA, get_transform(train=False))
-image, target = ds.__getitem__(0)
-print(image.size())
+# image, target = ds.__getitem__(0)
+# print(image.size())
 # show([image])
-print(target)
+# print(target)
 
-# # set hyper-parameters
-# params = {'batch_size': 24, 'num_workers': 4}
-# num_epochs = 100
-# num_classes = 2
-# num_coord = 4
+# set hyper-parameters
+params = {'batch_size': 24, 'num_workers': 4}
+num_epochs = 100
+num_classes = 2
+num_coord = 4
 
-# # instantiate data loaders
-# # split the dataset in train and test set
-# indices = torch.randperm(len(ds)).tolist()
-# dataset = torch.utils.data.Subset(ds, indices[:-50])
-# dataset_test = torch.utils.data.Subset(ds_test, indices[-50:])
+# instantiate data loaders
+# split the dataset in train and test set
+indices = torch.randperm(len(ds)).tolist()
+dataset = torch.utils.data.Subset(ds, indices[:-50])
+dataset_test = torch.utils.data.Subset(ds_test, indices[-50:])
 
-# def collate_fn(batch):
-#     return tuple(zip(*batch))
-# # define training and validation data loaders
-# data_loader_training = torch.utils.data.DataLoader(dataset, shuffle=True, collate_fn=collate_fn, **params)
-# data_loader_test = torch.utils.data.DataLoader(dataset_test, shuffle=True, collate_fn=collate_fn, **params)
+def collate_fn(batch):
+    return tuple(zip(*batch))
+# define training and validation data loaders
+data_loader_training = torch.utils.data.DataLoader(dataset, shuffle=True, collate_fn=collate_fn, **params)
+data_loader_test = torch.utils.data.DataLoader(dataset_test, shuffle=True, collate_fn=collate_fn, **params)
 
-# # Test
-# # For Training
-# if __name__ == '__main__':
-#     #########
-#     # First test & visualisation
-#     ###########
-#     device = 'cuda' if torch.cuda.is_available() else 'cpu'
-#     images, targets = next(iter(data_loader_training))
-#     images = list(image.to(device) for image in images)
-#     targets = [{k: v.to(device) for k, v in t.items()} for t in targets]
+# Test
+# For Training
+if __name__ == '__main__':
+    #########
+    # First test & visualisation
+    ###########
+    device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    images, targets = next(iter(data_loader_training))
+    images = list(image.to(device) for image in images)
+    targets = [{k: v.to(device) for k, v in t.items()} for t in targets]
 
-#     boxes = targets[2]['boxes'].cpu().numpy().astype(np.int32)
-#     print(images[2].size())
-#     sample = images[2].permute(1,2,0).cpu().numpy()
-#     print(sample)
-#     print(sample.shape)
-#     print("Box", boxes)
+    boxes = targets[2]['boxes'].cpu().numpy().astype(np.int32)
+    print(images[2].size())
+    sample = images[2].permute(1,2,0).cpu().numpy()
+    print(sample)
+    print(sample.shape)
+    print("Box", boxes)
 
-#     fig, ax = plt.subplots(1, 1, figsize=(16, 8))
-#     sample = cv2.cvtColor(sample, cv2.COLOR_BGR2RGB)
-#     for box in boxes:
-#         cv2.rectangle(sample,
-#                     (int(box[0]), int(box[1])),
-#                     (int(box[2]), int(box[3])),
-#                     (220, 0, 0), 3)
+    fig, ax = plt.subplots(1, 1, figsize=(16, 8))
+    sample = cv2.cvtColor(sample, cv2.COLOR_BGR2RGB)
+    for box in boxes:
+        cv2.rectangle(sample,
+                    (int(box[0]), int(box[1])),
+                    (int(box[2]), int(box[3])),
+                    (255, 0, 0), 2)
         
-#     ax.set_axis_off()
-#     ax.imshow((sample * 255).astype(np.uint8))
-#     plt.show()
+    ax.set_axis_off()
+    ax.imshow((sample * 255).astype(np.uint8))
+    plt.show()
 
     ############
     # Training #
