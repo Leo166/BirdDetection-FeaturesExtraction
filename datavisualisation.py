@@ -6,7 +6,7 @@ import matplotlib.patches as patches
 import xml.etree.ElementTree as ET
 
 def load_image(image_ref, label_ref):
-    size = 224, 224
+
     image = Image.open(image_ref)
     # image.thumbnail(size, Image.ANTIALIAS)
     # summarize some details about the image
@@ -30,6 +30,7 @@ def load_image(image_ref, label_ref):
         box = [xmin, xmax, ymin, ymax]
         all_box.append(box)
 
+    size = (image.size[0], 600)
     fig, (ax1, ax2) = plt.subplots(1, 2)
     ax1.imshow(image)
     
@@ -41,14 +42,24 @@ def load_image(image_ref, label_ref):
         rect = patches.Rectangle(anchor, width, height, linewidth=1, edgecolor='r', facecolor='none')
         ax1.add_patch(rect)
     image.thumbnail(size, Image.ANTIALIAS)
+    print("Image Size After: ", image.size)
     ax2.imshow(image)
     plt.show()
     return
 
-image_ref = "../dataset/AUbirds/train/64.jpg"
-image_ref = "D:/Adrien/cours/Master2/Thesis/Flying_birds_detection/Birds_detection/dataset/dataset/all_images/13.jpg"
-label_ref = "../dataset/AUbirds/train/64.xml"
-# load_image(image_ref, label_ref)
+root_dir = "D:/Adrien/cours/Master2/Thesis/Flying_birds_detection/Birds_detection/dataset/dataset"
+# image_ref = "../dataset/AUbirds/train/621.jpg"
+image_ref = "D:/Adrien/cours/Master2/Thesis/Flying_birds_detection/Birds_detection/dataset/dataset/all_images/549.jpg"
+# label_ref = "../dataset/AUbirds/train/621.xml"
+label_ref = "D:/Adrien/cours/Master2/Thesis/Flying_birds_detection/Birds_detection/dataset/dataset/all_labels/549.xml"
+load_image(image_ref, label_ref)
+
+# import os
+# imgs = list(sorted(os.listdir(os.path.join(root_dir, "all_images"))))
+# for i in imgs:
+#     image_ref = os.path.join(root_dir, "all_images", i)
+#     label_ref = os.path.join(root_dir, "all_labels", i.split(".")[0]+".xml")
+#     load_image(image_ref, label_ref)
 
 from torchvision.io import read_image
 import torchvision.transforms as T
@@ -63,8 +74,8 @@ import cv2 as cv
 #     plt.show()
 
 
-image = cv.imread(image_ref,0)
-ret,thresh1 = cv.threshold(image,127,255,cv.THRESH_BINARY)
+# image = cv.imread(image_ref,0)
+# ret,thresh1 = cv.threshold(image,127,255,cv.THRESH_BINARY)
 
-plt.imshow(thresh1,'gray',vmin=0,vmax=255)
-plt.show()
+# plt.imshow(thresh1,'gray',vmin=0,vmax=255)
+# plt.show()

@@ -44,8 +44,6 @@ model = FasterRCNN(backbone,
                    rpn_anchor_generator=anchor_generator,
                    box_roi_pool=roi_pooler)
 
-import torchvision.transforms as T
-
 # def get_transform(train):
 #     transforms = []
 #     transforms.append(T.ToTensor())
@@ -56,9 +54,14 @@ import torchvision.transforms as T
 #     return T.Compose(transforms)
 
 def get_transform(train):
-    return A.Compose([ A.RandomCrop(width=500, height=500),
-                    A.Flip(0.5),
-                    ToTensorV2(p=1.0)], bbox_params={'format': 'pascal_voc', 'label_fields': ['labels']}) 
+    transforms = []
+    if train:
+        transforms.append(A.Resize(600, 1200))
+        transforms.append(A.RandomCrop(width=576, height=576))
+        transforms.append(A.Flip(0.5))
+        # transforms.append(A.Normlize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]))           
+    transforms.append(ToTensorV2(pa=1.0)) 
+    return A.Compose(transforms, bbox_params={'format': 'pascal_voc', 'min_visibility': 0.6, 'label_fields': ['labels']})
 
 
 ROOT_DIR_DATA = "D:/Adrien/cours/Master2/Thesis/Flying_birds_detection/Birds_detection/dataset/dataset"
@@ -77,6 +80,7 @@ params = {'batch_size': 24, 'num_workers': 4}
 num_epochs = 100
 num_classes = 2
 num_coord = 4
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 # instantiate data loaders
 # split the dataset in train and test set
@@ -101,24 +105,26 @@ if __name__ == '__main__':
     images = list(image.to(device) for image in images)
     targets = [{k: v.to(device) for k, v in t.items()} for t in targets]
 
-    boxes = targets[2]['boxes'].cpu().numpy().astype(np.int32)
-    print(images[2].size())
-    sample = images[2].permute(1,2,0).cpu().numpy()
-    print(sample)
-    print(sample.shape)
-    print("Box", boxes)
+    for i in range(len(images)):
+        boxes = targets[i]['boxes'].cpu().numpy().astype(np.int32)
+        image_id = targets[i]['image_id'].cpu().numpy().astype(np.int32)
+        print(image_id)
+        print(images[i].size())
+        sample = images[i].permute(1,2,0).cpu().numpy()
+        print(sample)
+        print(sample.shape)
+        print("Box", boxes)
 
-    fig, ax = plt.subplots(1, 1, figsize=(16, 8))
-    sample = cv2.cvtColor(sample, cv2.COLOR_BGR2RGB)
-    for box in boxes:
-        cv2.rectangle(sample,
-                    (int(box[0]), int(box[1])),
-                    (int(box[2]), int(box[3])),
-                    (255, 0, 0), 2)
-        
-    ax.set_axis_off()
-    ax.imshow((sample * 255).astype(np.uint8))
-    plt.show()
+        fig, ax = plt.subplots(1, 1, figsize=(16, 8))
+        sample = cv2.cvtColor(sample, cv2.COLOR_BGR2RGB)
+        for box in boxes:
+            cv2.rectangle(sample,
+                        (int(box[0]), int(box[1])),
+                        (int(box[2]), int(box[3])),
+                        (255, 0, 0), 2)
+            
+        ax.imshow((sample * 255).astype(np.uint8))
+        plt.show()
 
     ############
     # Training #
@@ -137,12 +143,13 @@ if __name__ == '__main__':
     #     epoch_loss = 0
     #     iteration = 0
         
-    #     for images, targets, image_ids in data_loader_training:
+    #     for images, targets in data_loader_training:
             
     #         images = list(image.to(device) for image in images)
     #         targets = [{k: v.to(device) for k, v in t.items()} for t in targets]
 
-    #         loss_dict = model(images, targets)
+    #         loss_dict = model(images, targets) # returns losses and detections
+    #         print("Output model/Loss, loss_dict")
 
     #         losses = sum(loss for loss in loss_dict.values())
     #         loss_value = losses.item()

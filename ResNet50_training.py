@@ -29,7 +29,7 @@ def get_transform(train):
     transforms.append(T.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]))
     return T.Compose(transforms)
 
-ROOT_DIR_DATA = "D:/Adrien/cours/Master2/Mémoire/Flying_birds_detection/Birds_detection/dataset/dataset/"
+ROOT_DIR_DATA = "D:/Adrien/cours/Master2/Thesis/Flying_birds_detection/Birds_detection/dataset/dataset/"
 
 # instantiate dataset objects
 ds = BirdDataset(ROOT_DIR_DATA, get_transform(train=True))

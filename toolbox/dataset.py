@@ -59,6 +59,7 @@ class BirdDataset(torch.utils.data.Dataset):
         num_objs = len(boxes)
 
         # convert everything into a torch.Tensor
+        image_id = torch.tensor([idx])
         boxes = torch.as_tensor(boxes, dtype=torch.float32)
         labels = torch.ones((num_objs,), dtype=torch.int64) # only one class : a bird
 
@@ -66,7 +67,7 @@ class BirdDataset(torch.utils.data.Dataset):
         target["boxes"] = boxes
         target["labels"] = labels
         # target["masks"] = masks
-        # target["image_id"] = image_id
+        target["image_id"] = image_id
         # target["area"] = area
         # target["iscrowd"] = iscrowd
 
@@ -80,19 +81,6 @@ class BirdDataset(torch.utils.data.Dataset):
             sample = self.transforms(**sample)
 
             img = sample['image']
-            # print(zip(*sample['bboxes']))
-            # print("Boxes", sample['bboxes'])
-            # print(type(sample['bboxes']))
-            # print("Labels", sample['labels'])
-            if len(sample['bboxes']) == 0 :
-                target['boxes'] = torch.tensor([])
-                # print(target['boxes'])
-                # print(type(target['boxes']))
-                # print("NOOO")
-            else:
-                target['boxes'] = torch.stack(tuple(map(torch.tensor, zip(*sample['bboxes'])))).permute(1, 0)
-                # print(target['boxes'])
-                # print(type(target['boxes']))
-                # print("YESSSS")
+            target['boxes'] = torch.tensor(sample['bboxes'])
 
         return img, target

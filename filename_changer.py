@@ -28,14 +28,19 @@ from torchvision.io import read_image
 #         os.rename("../dataset/AUbirds/test/" + filename, "../dataset/AUbirds/all_labelled_data/" + str(count_xml) + ".xml")
 #         count_xml += 1
 
-import os
+# import os
 # os.getcwd()
-# count_jpg = 501
-# count_xml = 501
-# collection = "../dataset/AUbirds/all_images/"
+# # count_jpg = 488
+# # count_xml = 488
+# collection = "../dataset/AUbirds/test_order/"
 # for i, filename in enumerate(os.listdir(collection)):
 #     filesuffix = filename.split(".")
 #     if filesuffix[1] =="xml":
-#         os.rename("../dataset/AUbirds/all_images/" + filename, "../dataset/AUbirds/all_labels/" + filename)
+#         os.rename("../dataset/AUbirds/test_order/" + filename, "../dataset/AUbirds/all_labels/" + filename)
+#         # count_xml += 1
+#     # elif filesuffix[1] =="jpg":
+#     #     os.rename("../dataset/AUbirds/test/" + filename, "../dataset/AUbirds/test_order/" + str(count_jpg) + ".jpg")
+#     #     count_jpg += 1
+    
 
-# print(list(sorted(os.listdir(os.path.join("../dataset/dataset/", "all_images")))))
+print(list(sorted(os.listdir(os.path.join("../dataset/dataset/", "all_images")))))
