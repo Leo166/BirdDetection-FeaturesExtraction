@@ -1,0 +1,26 @@
+<annotation>
+	<folder>train</folder>
+	<filename>325.jpg</filename>
+	<path>D:/tensorflow1/models/research/object_detection/images/train/325.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>1024</width>
+		<height>600</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>bird</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>289</xmin>
+			<ymin>92</ymin>
+			<xmax>582</xmax>
+			<ymax>518</ymax>
+		</bndbox>
+	</object>
+</annotation>
