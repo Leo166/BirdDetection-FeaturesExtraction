@@ -17,6 +17,18 @@
 		<truncated>0</truncated>
 		<difficult>0</difficult>
 		<bndbox>
+			<xmin>567</xmin>
+			<ymin>1</ymin>
+			<xmax>671</xmax>
+			<ymax>170</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>bird</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
 			<xmin>663</xmin>
 			<ymin>17</ymin>
 			<xmax>783</xmax>

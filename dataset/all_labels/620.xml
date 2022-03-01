@@ -175,7 +175,7 @@
 		<bndbox>
 			<xmin>889</xmin>
 			<ymin>431</ymin>
-			<xmax>946</xmax>
+			<xmax>968</xmax>
 			<ymax>499</ymax>
 		</bndbox>
 	</object>
@@ -186,7 +186,7 @@
 		<difficult>0</difficult>
 		<bndbox>
 			<xmin>918</xmin>
-			<ymin>455</ymin>
+			<ymin>446</ymin>
 			<xmax>996</xmax>
 			<ymax>507</ymax>
 		</bndbox>
@@ -210,7 +210,7 @@
 		<difficult>0</difficult>
 		<bndbox>
 			<xmin>912</xmin>
-			<ymin>506</ymin>
+			<ymin>479</ymin>
 			<xmax>985</xmax>
 			<ymax>570</ymax>
 		</bndbox>
@@ -237,18 +237,6 @@
 			<ymin>458</ymin>
 			<xmax>837</xmax>
 			<ymax>482</ymax>
-		</bndbox>
-	</object>
-	<object>
-		<name>bird</name>
-		<pose>Unspecified</pose>
-		<truncated>0</truncated>
-		<difficult>0</difficult>
-		<bndbox>
-			<xmin>784</xmin>
-			<ymin>484</ymin>
-			<xmax>829</xmax>
-			<ymax>497</ymax>
 		</bndbox>
 	</object>
 	<object>

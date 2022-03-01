@@ -17,6 +17,30 @@
 		<truncated>0</truncated>
 		<difficult>0</difficult>
 		<bndbox>
+			<xmin>593</xmin>
+			<ymin>223</ymin>
+			<xmax>719</xmax>
+			<ymax>273</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>bird</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>609</xmin>
+			<ymin>230</ymin>
+			<xmax>753</xmax>
+			<ymax>262</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>bird</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
 			<xmin>127</xmin>
 			<ymin>136</ymin>
 			<xmax>257</xmax>
@@ -137,8 +161,8 @@
 		<truncated>1</truncated>
 		<difficult>0</difficult>
 		<bndbox>
-			<xmin>618</xmin>
-			<ymin>546</ymin>
+			<xmin>608</xmin>
+			<ymin>542</ymin>
 			<xmax>751</xmax>
 			<ymax>600</ymax>
 		</bndbox>
@@ -149,9 +173,9 @@
 		<truncated>0</truncated>
 		<difficult>0</difficult>
 		<bndbox>
-			<xmin>489</xmin>
-			<ymin>504</ymin>
-			<xmax>594</xmax>
+			<xmin>471</xmin>
+			<ymin>490</ymin>
+			<xmax>607</xmax>
 			<ymax>566</ymax>
 		</bndbox>
 	</object>

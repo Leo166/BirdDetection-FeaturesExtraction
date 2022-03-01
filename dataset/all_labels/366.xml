@@ -23,16 +23,4 @@
 			<ymax>527</ymax>
 		</bndbox>
 	</object>
-	<object>
-		<name>bird</name>
-		<pose>Unspecified</pose>
-		<truncated>0</truncated>
-		<difficult>0</difficult>
-		<bndbox>
-			<xmin>749</xmin>
-			<ymin>259</ymin>
-			<xmax>882</xmax>
-			<ymax>368</ymax>
-		</bndbox>
-	</object>
 </annotation>
